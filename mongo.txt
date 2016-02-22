@@ -1,0 +1,10 @@
+Run the following commands to generate the mongo_dump.json file:
+
+1. Download the mongo dump from http://mongodb-enron-email.s3-website-us-east-1.amazonaws.com/
+2. Import the dump into mongodb: https://docs.mongodb.org/manual/reference/program/mongorestore/#bin.mongorestore
+3. Run the mongo CL and run:
+  I. db.createCollection("subset")
+  II. db.messages.find({body: /ORIGINAL|RE:|Reply/i}, {body: 1, _id: 0}).forEach(function(d) { db.subset.insert(d) });
+4. Export the "subset" collection to a JSON file: https://docs.mongodb.org/manual/reference/program/mongoexport/ 'mongoexport --db enron --collection subset --out mongo_dump.json'
+
+Now you can run 'ruby separate.rb' with mongo_dump.json in the project directory.
